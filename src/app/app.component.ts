@@ -166,8 +166,21 @@ export class AppComponent {
   	}
   }
 
+  assignSelectedClass () {
+	  let currentlySelected = document.querySelector(`div.selected`);
+		if (currentlySelected != null) {
+			currentlySelected.classList.remove("selected");
+		}
+		if (this.selectedPiece != null) {
+			let id = this.selectedPiece.x*this.game.width + this.selectedPiece.y + 1;
+			let selectedSquare = document.querySelector(`div#cell${ id }`); 
+  		selectedSquare.classList.add("selected");
+  	}
+  }
+
   selectSquare(event : Event) : void {
-  	let id : number = +(<HTMLDivElement>event.target).id.substring(4);
+  	let target = (<HTMLDivElement>event.target);
+  	let id : number = +target.id.substring(4);
   	let sourceX : number = Math.floor((id-1)/this.game.width);
   	let sourceY : number = (id-1)%this.game.width;
   	let prospectivePiece : Piece = this.game.getPiece(sourceX, sourceY);
@@ -186,5 +199,6 @@ export class AppComponent {
   		}
   	);
   	this.updateBoard();
+  	this.assignSelectedClass();
   }
 }

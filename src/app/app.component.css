@@ -85,3 +85,37 @@
 	background-color: #e6be8a;
 	border: none;
 }
+
+.selected {
+  animation: blink-animation 2s steps(20, start) infinite;
+  -webkit-animation: blink-animation 2s steps(20, start) infinite;
+}
+
+@keyframes blink-animation {
+	0% {
+		opacity: 1;
+	}
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+  	opacity: 1;
+  }
+}
+@-webkit-keyframes blink-animation {
+	0% {
+		opacity: 1;
+	}
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+  	opacity: 1;
+  }
+}
+
+@media screen and (max-width: 600px) {
+	.lg-columns {
+		display: none;
+	}
+}
