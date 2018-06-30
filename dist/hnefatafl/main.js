@@ -143,6 +143,7 @@ var Piece = /** @class */ (function () {
 }());
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
+        var _this = this;
         this.title = 'Hnefatafl';
         this.game = new Game();
         this.board = document.querySelector(".board");
@@ -186,6 +187,10 @@ var AppComponent = /** @class */ (function () {
         this.game.placePiece(new Piece(10, 5, "bandit"));
         this.game.placePiece(new Piece(10, 6, "bandit"));
         this.game.placePiece(new Piece(10, 7, "bandit"));
+        // Update the board when the document has loaded
+        document.addEventListener("DOMContentLoaded", function (_) {
+            _this.updateBoard();
+        });
     }
     AppComponent.prototype.updateBoard = function () {
         var _this = this;

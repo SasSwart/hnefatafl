@@ -137,6 +137,11 @@ export class AppComponent {
 			this.game.placePiece(new Piece(10, 5, "bandit"));
 			this.game.placePiece(new Piece(10, 6, "bandit"));
 			this.game.placePiece(new Piece(10, 7, "bandit"));		
+
+			// Update the board when the document has loaded
+			document.addEventListener("DOMContentLoaded", _ => {
+				this.updateBoard();
+			});
 	}
 
   title = 'Hnefatafl';
