@@ -20,7 +20,7 @@ export class AppComponent {
 			// Update the board when the document has loaded
 			document.addEventListener("DOMContentLoaded", _ => {
 				this.updateBoard();
-				this.socket = io.connect('http://localhost:5000', {reconnect: true});
+				this.socket = io.connect('https://hnefataflsa.herokuapp.com/', {reconnect: true});
 
 				this.socket.on('move', data => {
 					console.log('Someone moved');
