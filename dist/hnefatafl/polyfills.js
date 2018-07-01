@@ -5434,6 +5434,7 @@ __webpack_require__.r(__webpack_exports__);
 // import 'classlist.js';  // Run `npm install --save classlist.js`.
 /** IE10 and IE11 requires the following for the Reflect API. */
 // import 'core-js/es6/reflect';
+window.global = window;
 /** Evergreen browsers require these. **/
 // Used for reflect-metadata in JIT. If you use AOT (and only Angular decorators), you can remove.
 
@@ -5461,22 +5462,22 @@ __webpack_require__.r(__webpack_exports__);
  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
- */
+ */ 
 
 
 /***/ }),
 
-/***/ 1:
+/***/ 2:
 /*!********************************!*\
   !*** multi ./src/polyfills.ts ***!
   \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/user/Dropbox/Documents/Programming/JS/hnefatafl/hnefatafl/src/polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! /home/sas/Dropbox/Documents/Programming/JS/hnefatafl/src/polyfills.ts */"./src/polyfills.ts");
 
 
 /***/ })
 
-},[[1,"runtime"]]]);
+},[[2,"runtime"]]]);
 //# sourceMappingURL=polyfills.js.map

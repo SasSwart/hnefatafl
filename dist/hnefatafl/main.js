@@ -56,6 +56,9 @@ module.exports = "<div class=\"board-container\">\n  <div class=\"col lg-columns
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -66,130 +69,30 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-var Game = /** @class */ (function () {
-    function Game() {
-        this.pieces = [];
-        this.width = 11;
-        this.height = 11;
-        this.typesOfPieces = [
-            "king",
-            "knight",
-            "bandit"
-        ];
-        this.teams = [
-            ["bandit"],
-            ["king", "knight"],
-        ];
-        this.teamToMove = 0;
-    }
-    Game.prototype.move = function (oldPiece, newPiece) {
-        if (oldPiece == null || newPiece == null) {
-            return false;
-        }
-        else if (oldPiece == undefined || newPiece == undefined) {
-            return false;
-        }
-        if (oldPiece.type != newPiece.type) {
-            return false;
-        }
-        for (var i = 0; i < this.teams[this.teamToMove].length; i++) {
-            if (this.teams[this.teamToMove][i] === oldPiece.type) {
-                this.placePiece(newPiece);
-                this.removePiece(oldPiece);
-                this.teamToMove = (this.teamToMove + 1) % this.teams.length;
-            }
-        }
-    };
-    Game.prototype.placePiece = function (piece) {
-        var _this = this;
-        return this.ifIsPiece(piece, function (_) {
-            _this.pieces[piece.x * _this.width + piece.y] = piece;
-            return true;
-        }, function (_) {
-            return false;
-        });
-    };
-    Game.prototype.getPiece = function (x, y) {
-        var type = this.pieces[x * this.width + y];
-        return this.ifIsPiece(type, function (_) {
-            return type;
-        }, function (_) {
-            return null;
-        });
-    };
-    Game.prototype.removePiece = function (piece) {
-        this.pieces[piece.x * this.width + piece.y] = null;
-    };
-    Game.prototype.ifIsPiece = function (piece, callback_true, callback_false) {
-        if (piece === undefined || piece === null) {
-            return callback_false();
-        }
-        for (var i = 0; i < this.typesOfPieces.length; i++) {
-            if (piece.type === this.typesOfPieces[i]) {
-                return callback_true();
-            }
-        }
-        return callback_false();
-    };
-    return Game;
-}());
-var Piece = /** @class */ (function () {
-    function Piece(pX, pY, pType) {
-        this.type = pType;
-        this.x = pX;
-        this.y = pY;
-    }
-    return Piece;
-}());
+
+
+function numberToLetter(num) {
+    var start = 'a'.charCodeAt(0);
+    return String.fromCharCode(start + num);
+}
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
         var _this = this;
         this.title = 'Hnefatafl';
-        this.game = new Game();
+        this.game = new _game__WEBPACK_IMPORTED_MODULE_2__["Game"]();
         this.board = document.querySelector(".board");
         this.selectedPiece = null;
-        // Place the King and his knights
-        this.game.placePiece(new Piece(5, 5, "king"));
-        this.game.placePiece(new Piece(4, 5, "knight"));
-        this.game.placePiece(new Piece(6, 5, "knight"));
-        this.game.placePiece(new Piece(5, 4, "knight"));
-        this.game.placePiece(new Piece(5, 6, "knight"));
-        this.game.placePiece(new Piece(4, 4, "knight"));
-        this.game.placePiece(new Piece(4, 6, "knight"));
-        this.game.placePiece(new Piece(6, 4, "knight"));
-        this.game.placePiece(new Piece(6, 6, "knight"));
-        this.game.placePiece(new Piece(3, 5, "knight"));
-        this.game.placePiece(new Piece(5, 7, "knight"));
-        this.game.placePiece(new Piece(7, 5, "knight"));
-        this.game.placePiece(new Piece(5, 3, "knight"));
-        // Place the Bandits
-        this.game.placePiece(new Piece(5, 1, "bandit"));
-        this.game.placePiece(new Piece(3, 0, "bandit"));
-        this.game.placePiece(new Piece(4, 0, "bandit"));
-        this.game.placePiece(new Piece(5, 0, "bandit"));
-        this.game.placePiece(new Piece(6, 0, "bandit"));
-        this.game.placePiece(new Piece(7, 0, "bandit"));
-        this.game.placePiece(new Piece(5, 9, "bandit"));
-        this.game.placePiece(new Piece(3, 10, "bandit"));
-        this.game.placePiece(new Piece(4, 10, "bandit"));
-        this.game.placePiece(new Piece(5, 10, "bandit"));
-        this.game.placePiece(new Piece(6, 10, "bandit"));
-        this.game.placePiece(new Piece(7, 10, "bandit"));
-        this.game.placePiece(new Piece(1, 5, "bandit"));
-        this.game.placePiece(new Piece(0, 3, "bandit"));
-        this.game.placePiece(new Piece(0, 4, "bandit"));
-        this.game.placePiece(new Piece(0, 5, "bandit"));
-        this.game.placePiece(new Piece(0, 6, "bandit"));
-        this.game.placePiece(new Piece(0, 7, "bandit"));
-        this.game.placePiece(new Piece(9, 5, "bandit"));
-        this.game.placePiece(new Piece(10, 3, "bandit"));
-        this.game.placePiece(new Piece(10, 4, "bandit"));
-        this.game.placePiece(new Piece(10, 5, "bandit"));
-        this.game.placePiece(new Piece(10, 6, "bandit"));
-        this.game.placePiece(new Piece(10, 7, "bandit"));
+        this.game = Object(_game__WEBPACK_IMPORTED_MODULE_2__["getNewHnefataflGame"])();
         // Update the board when the document has loaded
         document.addEventListener("DOMContentLoaded", function (_) {
             _this.updateBoard();
+            _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1___default.a.connect('http://localhost:5000', { reconnect: true });
+            _this.socket.on('move', function (data) {
+                console.log('Someone moved');
+                _this.game.moveUsingNotation(data);
+                _this.updateBoard();
+                _this.assignSelectedClass();
+            });
         });
     }
     AppComponent.prototype.updateBoard = function () {
@@ -216,7 +119,7 @@ var AppComponent = /** @class */ (function () {
             currentlySelected.classList.remove("selected");
         }
         if (this.selectedPiece != null) {
-            var id = this.selectedPiece.x * this.game.width + this.selectedPiece.y + 1;
+            var id = this.selectedPiece.y * this.game.width + this.selectedPiece.x + 1;
             var selectedSquare = document.querySelector("div#cell" + id);
             selectedSquare.classList.add("selected");
         }
@@ -225,17 +128,22 @@ var AppComponent = /** @class */ (function () {
         var _this = this;
         var target = event.target;
         var id = +target.id.substring(4);
-        var sourceX = Math.floor((id - 1) / this.game.width);
-        var sourceY = (id - 1) % this.game.width;
+        var sourceY = Math.floor((id - 1) / this.game.width);
+        var sourceX = (id - 1) % this.game.width;
         var prospectivePiece = this.game.getPiece(sourceX, sourceY);
         this.game.ifIsPiece(prospectivePiece, function (_) {
             if (_this.selectedPiece === prospectivePiece) {
                 _this.selectedPiece = null;
             }
-            _this.selectedPiece = prospectivePiece;
+            else {
+                _this.selectedPiece = prospectivePiece;
+            }
         }, function (_) {
             if (_this.selectedPiece != null) {
-                _this.game.move(_this.selectedPiece, new Piece(sourceX, sourceY, _this.selectedPiece.type));
+                if (_this.game.move(_this.selectedPiece, new _game__WEBPACK_IMPORTED_MODULE_2__["Piece"](sourceX, sourceY, _this.selectedPiece.type))) {
+                    var notation = numberToLetter(_this.selectedPiece.x) + (_this.selectedPiece.y + 1) + ":" + (numberToLetter(sourceX) + (sourceY + 1));
+                    _this.socket.emit('move', notation);
+                }
             }
             _this.selectedPiece = null;
         });
@@ -328,6 +236,161 @@ var environment = {
 
 /***/ }),
 
+/***/ "./src/game.ts":
+/*!*********************!*\
+  !*** ./src/game.ts ***!
+  \*********************/
+/*! exports provided: getNewHnefataflGame, Game, Piece */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNewHnefataflGame", function() { return getNewHnefataflGame; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Game", function() { return Game; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Piece", function() { return Piece; });
+function letterToNumber(letter) {
+    var start = 'a'.charCodeAt(0);
+    return 1 + letter.charCodeAt(0) - start;
+}
+function getNewHnefataflGame() {
+    var game = new Game();
+    // Place the King and his knights
+    game.placePiece(new Piece(5, 5, "king"));
+    game.placePiece(new Piece(4, 5, "knight"));
+    game.placePiece(new Piece(6, 5, "knight"));
+    game.placePiece(new Piece(5, 4, "knight"));
+    game.placePiece(new Piece(5, 6, "knight"));
+    game.placePiece(new Piece(4, 4, "knight"));
+    game.placePiece(new Piece(4, 6, "knight"));
+    game.placePiece(new Piece(6, 4, "knight"));
+    game.placePiece(new Piece(6, 6, "knight"));
+    game.placePiece(new Piece(3, 5, "knight"));
+    game.placePiece(new Piece(5, 7, "knight"));
+    game.placePiece(new Piece(7, 5, "knight"));
+    game.placePiece(new Piece(5, 3, "knight"));
+    // Place the Bandits
+    game.placePiece(new Piece(5, 1, "bandit"));
+    game.placePiece(new Piece(3, 0, "bandit"));
+    game.placePiece(new Piece(4, 0, "bandit"));
+    game.placePiece(new Piece(5, 0, "bandit"));
+    game.placePiece(new Piece(6, 0, "bandit"));
+    game.placePiece(new Piece(7, 0, "bandit"));
+    game.placePiece(new Piece(5, 9, "bandit"));
+    game.placePiece(new Piece(3, 10, "bandit"));
+    game.placePiece(new Piece(4, 10, "bandit"));
+    game.placePiece(new Piece(5, 10, "bandit"));
+    game.placePiece(new Piece(6, 10, "bandit"));
+    game.placePiece(new Piece(7, 10, "bandit"));
+    game.placePiece(new Piece(1, 5, "bandit"));
+    game.placePiece(new Piece(0, 3, "bandit"));
+    game.placePiece(new Piece(0, 4, "bandit"));
+    game.placePiece(new Piece(0, 5, "bandit"));
+    game.placePiece(new Piece(0, 6, "bandit"));
+    game.placePiece(new Piece(0, 7, "bandit"));
+    game.placePiece(new Piece(9, 5, "bandit"));
+    game.placePiece(new Piece(10, 3, "bandit"));
+    game.placePiece(new Piece(10, 4, "bandit"));
+    game.placePiece(new Piece(10, 5, "bandit"));
+    game.placePiece(new Piece(10, 6, "bandit"));
+    game.placePiece(new Piece(10, 7, "bandit"));
+    return game;
+}
+var Game = /** @class */ (function () {
+    function Game() {
+        this.pieces = [];
+        this.width = 11;
+        this.height = 11;
+        this.typesOfPieces = [
+            "king",
+            "knight",
+            "bandit",
+        ];
+        this.teams = [
+            ["bandit"],
+            ["king", "knight"],
+        ];
+        this.teamToMove = 0;
+    }
+    Game.prototype.move = function (oldPiece, newPiece) {
+        if (oldPiece == null || newPiece == null) {
+            return false;
+        }
+        else if (oldPiece == undefined || newPiece == undefined) {
+            return false;
+        }
+        if (oldPiece.type != newPiece.type) {
+            return false;
+        }
+        for (var i = 0; i < this.teams[this.teamToMove].length; i++) {
+            if (this.teams[this.teamToMove][i] === oldPiece.type) {
+                this.placePiece(newPiece);
+                this.removePiece(oldPiece);
+                this.teamToMove = (this.teamToMove + 1) % this.teams.length;
+                return true;
+            }
+        }
+        return false;
+    };
+    Game.prototype.moveUsingNotation = function (move) {
+        console.log(move);
+        var notationMask = /([a-zA-Z])(\d\d?)\:([a-zA-Z])(\d\d?)/;
+        var tokenisedNotation = move.toLowerCase().match(notationMask);
+        if (tokenisedNotation) {
+            var oldPiece = this.getPiece(letterToNumber(tokenisedNotation[1]) - 1, +tokenisedNotation[2] - 1);
+            var newPiece = new Piece(letterToNumber(tokenisedNotation[3]) - 1, +tokenisedNotation[4] - 1, oldPiece.type);
+            return this.move(oldPiece, newPiece);
+        }
+        else {
+            return false;
+        }
+    };
+    Game.prototype.placePiece = function (piece) {
+        var _this = this;
+        return this.ifIsPiece(piece, function (_) {
+            _this.pieces[piece.y * _this.width + piece.x] = piece;
+            return true;
+        }, function (_) {
+            return false;
+        });
+    };
+    Game.prototype.getPiece = function (x, y) {
+        var type = this.pieces[y * this.width + x];
+        return this.ifIsPiece(type, function (_) {
+            return type;
+        }, function (_) {
+            return null;
+        });
+    };
+    Game.prototype.removePiece = function (piece) {
+        this.pieces[piece.y * this.width + piece.x] = null;
+    };
+    Game.prototype.ifIsPiece = function (piece, callback_true, callback_false) {
+        if (piece === undefined || piece === null) {
+            return callback_false();
+        }
+        for (var i = 0; i < this.typesOfPieces.length; i++) {
+            if (piece.type === this.typesOfPieces[i]) {
+                return callback_true();
+            }
+        }
+        return callback_false();
+    };
+    return Game;
+}());
+
+var Piece = /** @class */ (function () {
+    function Piece(pX, pY, pType) {
+        this.type = pType;
+        this.x = pX;
+        this.y = pY;
+    }
+    return Piece;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/main.ts":
 /*!*********************!*\
   !*** ./src/main.ts ***!
@@ -361,8 +424,19 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/user/Dropbox/Documents/Programming/JS/hnefatafl/hnefatafl/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /home/sas/Dropbox/Documents/Programming/JS/hnefatafl/src/main.ts */"./src/main.ts");
 
+
+/***/ }),
+
+/***/ 1:
+/*!********************!*\
+  !*** ws (ignored) ***!
+  \********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* (ignored) */
 
 /***/ })
 
