@@ -86,7 +86,7 @@ var AppComponent = /** @class */ (function () {
         // Update the board when the document has loaded
         document.addEventListener("DOMContentLoaded", function (_) {
             _this.updateBoard();
-            _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1___default.a.connect('http://localhost:5000', { reconnect: true });
+            _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1___default.a.connect('https://hnefataflsa.herokuapp.com/', { reconnect: true });
             _this.socket.on('move', function (data) {
                 console.log('Someone moved');
                 _this.game.moveUsingNotation(data);
